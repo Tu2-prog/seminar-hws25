@@ -1,5 +1,5 @@
 from enum import Enum
-from model import APIClient, ModelType
+from src.model import APIClient, ModelType
 
 class Bot:
     def __init__(self, api_type: str, model_type: ModelType):
@@ -19,3 +19,12 @@ class Bot:
                 return APIClient.get_model(api_type, "gpt-4.1-nano")
             case _:
                 raise ValueError(f"Unsupported model type: {model_type}")
+            
+class Agent:
+    def __init__(self, bot: Bot):
+        self.bot = bot
+
+    # ...existing code...
+    def respond(self, prompt: str) -> str:
+        response = self.bot.model.invoke([{"role": "user", "content": prompt}])
+        return response.content 
