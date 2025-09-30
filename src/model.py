@@ -4,12 +4,14 @@ from enum import Enum
 from dotenv import load_dotenv
 import os
 
+
 class ModelType(Enum):
     LLAMA4 = "llama4"
     DEEPSEEK = "deepseek"
     CHEAP = "cheap"
     OPENAI = "openai"
     NANO = "nano"
+
 
 class APIClient:
     @staticmethod
@@ -21,13 +23,13 @@ class APIClient:
                 raise ValueError("API_KEY environment variable is not set.")
             return ChatGroq(
                 api_key=api_key,
-                model="meta-llama/llama-4-scout-17b-16e-instruct",
+                model=model_name,
                 temperature=0.7,
             )
         else:
             api_key = os.getenv("OPENAI_API_KEY")
             if not api_key:
-                raise ValueError("OPENAI_API_KEY environment variable is not set.")
+                raise ValueError("API_KEY environment variable is not set.")
             return ChatOpenAI(
                 model_name=model_name,
                 temperature=0.7,
