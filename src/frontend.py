@@ -1,7 +1,7 @@
 import streamlit as st
 from bot import Bot, Agent
 from model import ModelType
-from prompts import test_prompt
+from prompts import zero_shot_prompt
 
 
 st.title("Welcome to the Streamlit App")
@@ -17,7 +17,8 @@ if st.button("Generate Documentation"):
         st.warning("Please paste some code to generate documentation.")
     else:
         agent = Agent(Bot(api_type, ModelType[bot_type]))
-        documentation = agent.respond(test_prompt)
+        parameters = {"language": language, "code_snippet": code_input}
+        documentation = agent.respond(zero_shot_prompt, parameters)
 
         # Display the generated documentation
         st.subheader("Generated Documentation")

@@ -27,6 +27,7 @@ class Agent:
     def __init__(self, bot: Bot):
         self.bot = bot
 
-    def respond(self, prompt: str) -> str:
-        response = self.bot.model.invoke([{"role": "user", "content": prompt}])
+    def respond(self, prompt: str, parameters: dict = {}) -> str:
+        messages = [{"role": "user", "content": prompt.format(**parameters)}]
+        response = self.bot.model.invoke(messages)
         return response.content
