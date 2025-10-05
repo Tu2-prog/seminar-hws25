@@ -1,4 +1,6 @@
+import json
 import os
+from datetime import datetime
 
 
 class LogManager:
@@ -13,6 +15,22 @@ class LogManager:
         # Create a subdirectory for each bot_type
         dir_path = os.path.join(self.base_log_dir, bot_type.lower())
         os.makedirs(dir_path, exist_ok=True)
-        full_path = os.path.join(dir_path, file_path)
-        with open(full_path, "w") as f:
-            f.write(message)
+        # Create a subdirectory for each date and store the logs there
+        date_str = datetime.now().strftime("%Y-%m-%d")
+        date_dir = os.path.join(dir_path, date_str)
+        os.makedirs(date_dir, exist_ok=True)
+
+        # Set the correct file extension
+        if isinstance(message, dict):
+            if not file_path.endswith(".json"):
+                file_path += ".json"
+        else:
+            if not file_path.endswith(".txt"):
+                file_path += ".txt"
+
+        full_path = os.path.join(date_dir, file_path)
+        with open(full_path, "w", encoding="utf-8") as f:
+            if isinstance(message, dict):
+                json.dump(message, f, indent=2, ensure_ascii=False)
+            else:
+                f.write(str(message))
