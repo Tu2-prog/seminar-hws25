@@ -64,5 +64,6 @@ class Agent:
     def respond(self, prompt: str, parameters: dict = {}) -> str:
         messages = [{"role": "user", "content": prompt.format(**parameters)}]
         response = self.bot.model.invoke(messages)
+        # print(response.content)
         parsed = self.extract_json_from_llm_output(response.content)
         return response.content, parsed
